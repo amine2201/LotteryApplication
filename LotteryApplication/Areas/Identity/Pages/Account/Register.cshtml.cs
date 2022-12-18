@@ -76,6 +76,12 @@ namespace LotteryApplication.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -117,6 +123,18 @@ namespace LotteryApplication.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                if (Input.FirstName != user.FirstName)
+                {
+                    user.FirstName = Input.FirstName;
+                    await _userManager.UpdateAsync(user);
+                }
+                if (Input.LastName != user.LastName)
+                {
+                    user.LastName = Input.LastName;
+                    await _userManager.UpdateAsync(user);
+                }
+                user.IsAdmin = false;
+                await _userManager.UpdateAsync(user);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
