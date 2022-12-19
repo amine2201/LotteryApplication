@@ -136,9 +136,11 @@ namespace LotteryApplication.Areas.Identity.Pages.Account
                 user.IsAdmin = false;
                 await _userManager.UpdateAsync(user);
                 var result = await _userManager.CreateAsync(user, Input.Password);
+               
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "Participant");
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
