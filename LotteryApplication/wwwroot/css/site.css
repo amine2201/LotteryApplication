@@ -11,8 +11,26 @@ html {
 html {
   position: relative;
   min-height: 100%;
+  
 }
 
 body {
   margin-bottom: 60px;
 }
+#item {
+    display: inline-block;
+    padding: 6px 10px;
+    background-color: #a31818b9;
+    cursor: pointer;
+    border-radius : 20px;
+    font-weight : 700;
+    margin : 10px;
+}
+
+    #item:hover {
+        background-color: lightblue;
+    }
+
+    #item:active {
+        background-color: darkblue;
+    }
