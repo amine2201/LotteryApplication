@@ -59,11 +59,13 @@ namespace LotteryApplication.Controllers
         public async Task<IActionResult> Create([Bind("Id,HaveWon,DateOfParticipation")] Participation participation)
         {
             
+
             if (ModelState.IsValid)
             {
                 participation.Id = Guid.NewGuid();
                 participation.DateOfParticipation = DateTime.Now;
                 participation.HaveWon = false;
+
                 _context.Add(participation);
                 await _context.SaveChangesAsync();
                 
