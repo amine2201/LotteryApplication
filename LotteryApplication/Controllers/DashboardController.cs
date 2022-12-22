@@ -1,100 +1,186 @@
 ﻿using LotteryApplication.DBContext;
 using LotteryApplication.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace LotteryApplication.Controllers
 {
     public class DashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
 
         public DashboardController(ApplicationDbContext context)
         {
             _context = context;
+            _userManager = context.GetService<UserManager<ApplicationUser>>();
         }
-        // GET: DashboardController
-        public ActionResult Index()
+        // GET: Dashboard
+        public IActionResult Index()
         {
             return View();
         }
 
-        // GET: DashboardController/Details/Participants/5
-        public ActionResult DetailsParticipants(int id)
+        // GET: Dashboard/Details/Participants
+        public async Task<IActionResult> Participants()
+        {
+            var participants = await (from user in _context.applicationUsers
+                                join ur in _context.UserRoles on user.Id equals ur.UserId
+                                join role in _context.Roles on ur.RoleId equals role.Id
+                                where role.Name == "Participant"
+                                select user).ToListAsync();
+            return View(participants);
+        }
+        // GET: Dashboard/Details/Participants/DetailsParticipation/5
+        public async Task<IActionResult> DetailsParticipant(String? id)
+        {
+            if (id == null || _context.applicationUsers == null)
+            {
+                return NotFound();
+            }
+
+            var applicationUser = await _context.applicationUsers
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
+
+            return View(applicationUser);
+        }
+
+        // GET: Dashboard/CreateParticipant/
+        public IActionResult CreateParticipant()
         {
             return View();
         }
 
-        // GET: DashboardController/Create
-        public ActionResult CreateParticipant()
-        {
-            return View();
-        }
-
-        // POST: DashboardController/Create
+        // POST: Dashboard/CreateParticipant
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateParticipant(IFormCollection collection)
+        public async Task<IActionResult> CreateParticipant([Bind("Id,FirstName,LastName,Email,IsAdmin")] ApplicationUser applicationUser)
         {
-            try
+            if (ModelState.IsValid)
             {
+                applicationUser.UserName = applicationUser.Email;
+                var result = await _userManager.CreateAsync(applicationUser,"Password1."+applicationUser.FirstName+applicationUser.LastName);
+                if (result.Succeeded)
+                {
+                    if(applicationUser.IsAdmin)
+                        await _userManager.AddToRoleAsync(applicationUser, "Admin");
+                    else
+                        await _userManager.AddToRoleAsync(applicationUser, "Participant");
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(applicationUser);
         }
 
-        // GET: DashboardController/Edit/5
-        public ActionResult EditPariticpant(int id)
+        // GET: Dashboard/EditParticipant/5
+        public async Task<IActionResult> EditParticipant(string id)
         {
-            return View();
+            if (id == null || _context.applicationUsers == null)
+            {
+                return NotFound();
+            }
+            var participant = await _userManager.FindByIdAsync(id);
+            if (participant == null)
+                return NotFound();
+            return View(participant);
         }
 
-        // POST: DashboardController/Edit/5
+        // POST: Dashboard/EditParticipant/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditParticipant(int id, IFormCollection collection)
+        public async Task<IActionResult> EditParticipant(string id, [Bind("Id,FirstName,LastName,Email,IsAdmin")] ApplicationUser applicationUser)
         {
-            try
+            if (id != applicationUser.Id)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
+
+            if (ModelState.IsValid)
             {
-                return View();
+                var currentUser = await _userManager.FindByIdAsync(id);
+                if (currentUser == null)
+                {
+                    return NotFound();
+                }
+
+                currentUser.FirstName = applicationUser.FirstName;
+                currentUser.LastName = applicationUser.LastName;
+                currentUser.Email = applicationUser.Email;
+                currentUser.IsAdmin = applicationUser.IsAdmin;
+
+                var result = await _userManager.UpdateAsync(currentUser);
+                if (result.Succeeded)
+                {
+                    var roles = await _userManager.GetRolesAsync(currentUser);
+                    foreach (var role in roles)
+                    {
+                        await _userManager.RemoveFromRoleAsync(currentUser, role);
+                    }
+                    if (applicationUser.IsAdmin)
+                        await _userManager.AddToRoleAsync(currentUser, "Admin");
+                    else
+                        await _userManager.AddToRoleAsync(currentUser, "Participant");
+
+                    RedirectToAction(nameof(Index));
+                }
+
+
             }
+            return View(applicationUser);
         }
 
-        // GET: DashboardController/Delete/5
-        public ActionResult Delete(int id)
+        // GET: Dashboard/DeleteParticipant/5
+        public async Task<IActionResult> DeleteParticipant(String id)
         {
-            return View();
+            if (id == null || _context.applicationUsers == null)
+            {
+                return NotFound();
+            }
+
+            var applicationUser = await _context.applicationUsers
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
+
+            return View(applicationUser);
         }
 
-        // POST: DashboardController/Delete/5
+        // POST: Dashboard/DeleteParticipant/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteParticipant(String id, IFormCollection collection)
         {
-            try
+            if (_context.applicationUsers == null)
             {
-                return RedirectToAction(nameof(Index));
+                return Problem("Entity set 'ApplicationDbContext.applicationUsers'  is null.");
             }
-            catch
+            var applicationUser = await _context.applicationUsers.FindAsync(id);
+            if (applicationUser != null)
             {
-                return View();
+                _context.applicationUsers.Remove(applicationUser);
             }
-        }
-        // GET: Participations
-        public async Task<IActionResult> IndexParticipations()
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            }
+        // GET: Dashboard/Participations
+        public async Task<IActionResult> Participations()
         {
             return View(await _context.participations.ToListAsync());
         }
 
-        // GET: Participations/Details/5
+        // GET: Dashboard/Participations/Details/5
         public async Task<IActionResult> DetailsParticipation(Guid? id)
         {
             if (id == null || _context.participations == null)
@@ -112,18 +198,18 @@ namespace LotteryApplication.Controllers
             return View(participation);
         }
 
-        // GET: Participations/Create
-        public IActionResult CreateParticipition()
+        // GET: Dashboard/Participations/Create
+        public IActionResult CreateParticipation()
         {
             return View();
         }
 
-        // POST: Participations/Create
+        // POST: Dashboard/Participations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateParticipition([Bind("Id,HaveWon,DateOfParticipation")] Participation participation)
+        public async Task<IActionResult> CreateParticipation([Bind("Id,HaveWon,DateOfParticipation")] Participation participation)
         {
             if (ModelState.IsValid)
             {
@@ -135,7 +221,7 @@ namespace LotteryApplication.Controllers
             return View(participation);
         }
 
-        // GET: Participations/Edit/5
+        // GET: Dashboard/Participations/Edit/5
         public async Task<IActionResult> EditParticipation(Guid? id)
         {
             if (id == null || _context.participations == null)
@@ -151,7 +237,7 @@ namespace LotteryApplication.Controllers
             return View(participation);
         }
 
-        // POST: Participations/Edit/5
+        // POST: Dashboard/Participations/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -186,7 +272,7 @@ namespace LotteryApplication.Controllers
             return View(participation);
         }
 
-        // GET: Participations/Delete/5
+        // GET: Dashboard/Participations/Delete/5
         public async Task<IActionResult> DeleteParticipation(Guid? id)
         {
             if (id == null || _context.participations == null)
@@ -204,7 +290,7 @@ namespace LotteryApplication.Controllers
             return View(participation);
         }
 
-        // POST: Participations/Delete/5
+        // POST: Dashboard/Participations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedParticipation(Guid id)

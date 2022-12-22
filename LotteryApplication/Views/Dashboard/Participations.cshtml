@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<LotteryApplication.Models.Participation>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index Participation";
 }
 
 <h1>Index</h1>
@@ -31,9 +31,9 @@
                 @Html.DisplayFor(modelItem => item.DateOfParticipation)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="EditParticipation" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="DetailsParticipation" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="DeleteParticipation" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
