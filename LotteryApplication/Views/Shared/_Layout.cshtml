@@ -26,13 +26,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">About us</a>
                         </li>
-
-                        </li>
-                        @if (User.Identity.IsAuthenticated)
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Participant" asp-action="Index">Participant</a>
-                            </li>
+                            @if (User.IsInRole("Participant"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Participant" asp-action="Index">Participant</a>
+                            </li>}
+                            else if(User.IsInRole("Admin")){                            
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                            </li>}
+
                         }
 
                     </ul>

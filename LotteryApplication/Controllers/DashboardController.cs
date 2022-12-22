@@ -313,5 +313,27 @@ namespace LotteryApplication.Controllers
         {
             return _context.participations.Any(e => e.Id == id);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LotteryResult()
+        {
+            var participants = await (from user in _context.applicationUsers
+                                      join ur in _context.UserRoles on user.Id equals ur.UserId
+                                      join role in _context.Roles on ur.RoleId equals role.Id
+                                      join participation in _context.participations on user equals participation.Participant 
+                                      where role.Name == "Participant"
+                                      select user).ToListAsync();
+
+            var winners = participants.Take(3).ToList();
+            var participations = _context.participations.ToList();
+            foreach ( var participation in participations )
+            {
+                if(participation.Participant!=null && winners.Contains(participation.Participant)  )
+                    participation.HaveWon=true;
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
