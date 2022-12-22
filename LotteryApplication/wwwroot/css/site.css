@@ -15,6 +15,7 @@ html {
   
 }
 
+
 body {
     margin-bottom: 60px;
     
@@ -62,6 +63,15 @@ body {
     font-family: Georgia, 'Times New Roman', Times, sans-serif;
 
 }
-
+.a {
+    font-weight: 600;
+    font-family: Georgia, 'Times New Roman', Times, sans-serif;
+}
+.a.1 {
+    color:green;
+}
+.a.2 {
+    color:red;
+}
   
     
