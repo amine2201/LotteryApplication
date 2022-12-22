@@ -4,12 +4,11 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-        <p>
-
+<center>
     <a class="btn btn-primary"  asp-action="Create" id="cr" type="submit" > + Create New Participation </a>
-    </p>
-
+    
+</center>
+<br />
     
 
 
@@ -35,8 +34,8 @@
                 @Html.DisplayFor(modelItem => item.DateOfParticipation)
             </td>
             <td>
-               
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="gg-trash-empty"></i></a>
             </td>
         </tr>
 }

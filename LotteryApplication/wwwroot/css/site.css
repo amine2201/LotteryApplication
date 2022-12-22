@@ -22,12 +22,13 @@ body {
 }
 #item {
     display: inline-block;
-    padding: 6px 10px;
+    padding: 3px 8px;
     background-color: #a31818b9;
     cursor: pointer;
     border-radius : 20px;
     font-weight : 700;
     margin : 10px;
+    margin-bottom:10px;
 }
 
     #item:hover {
@@ -36,7 +37,7 @@ body {
 
     #item:active {
         background-color: darkblue;
-        margin-top : 20px;
+        
     }
 
 #bt {
@@ -73,5 +74,22 @@ body {
 .a.2 {
     color:red;
 }
-  
-    
+a {
+    text-decoration: none;
+}
+#lo {
+    position: relative !important;
+    justify-content: center !important;
+    align-items: center !important;
+}                    
+#aa{
+    padding : 10px;
+}
+#rr{
+    margin:20px;
+}
+#image {
+    background-image: url('../images/good.jpg');
+    background-size: cover;
+    background-color:rgb(0, 0, 0, 0.38);
+}

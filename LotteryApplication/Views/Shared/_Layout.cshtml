@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link href='https://css.gg/trash-empty.css' rel='stylesheet'>
+
    
 </head>
 <body>
@@ -24,7 +26,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">About us</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs" style="font-size:20px">About us</a>
                         </li>
 
                         @if (User.Identity.IsAuthenticated)
@@ -49,7 +51,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - LotteryApplication - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2022 - Moroccan Visa Lottery Program 
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
