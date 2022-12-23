@@ -33,11 +33,11 @@
                             @if (User.IsInRole("Participant"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Participant" asp-action="Index">Participant</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Participant" asp-action="Index" style="font-size:20px">Participant</a>
                             </li>}
                             else if(User.IsInRole("Admin")){                            
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard" asp-action="Index" style="font-size:20px">Dashboard</a>
                             </li>}
 
                         }
