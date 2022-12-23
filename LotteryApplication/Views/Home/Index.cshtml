@@ -3,13 +3,20 @@
 }
 
 
-<body id="image">
-<div class="text-center">
-
-    <h1 class="display-4">Welcome To the Moroccan Visa program ! </h1>
+<body style="background-color:#CBEDD5 ;">
     <br />
-    <h3 class="display-8" style="font-weight:300;">If you wanna participate in the visa lottery make sure to login to your account or register if you don't have one ! </h3>
-    
+    <div class="text-center" >
+
+    <h1 class="display-4">Welcome To the Moroccan Visa Lottery ! </h1>
+    <br />
+        @if(!User.Identity.IsAuthenticated){
+        <p style="font-weight:400;">Are you interested in living and working in Morocco? If so, you may be eligible to participate in our visa lottery program.</p>
+    <p  style="font-weight:400;">If you wanna participate in the visa lottery make sure to login to your account or register if you don't have one ! </p>
+        }
+        else {
+            <h3 style="font-weight:600;">CHECK YOUR PARITCIPATION STATUS !! </H3>
+        }
+        
     
 </div>
 </body>

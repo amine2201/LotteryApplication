@@ -1,18 +1,20 @@
 
 html {
     font-size: 14px;
+   
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+        background-color: #CBEDD5;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
-  
+    position: relative;
+    min-height: 100%;
+    background-color:#CBEDD5;
 }
 
 
@@ -92,4 +94,36 @@ a {
     background-image: url('../images/good.jpg');
     background-size: cover;
     background-color:rgb(0, 0, 0, 0.38);
+}
+#anim {
+    display: inline-block;
+    position: relative;
+    color: #0087ca;
+    font-weight:700;
+    padding-right:1cm;
+}
+
+#anim::after {
+    content: '';
+    position: absolute;
+    width: 80%;
+    transform: scaleX(0);
+    height: 2.5px;
+    bottom: 0;
+    left: 0;
+    background-color: #a31818b9;
+    transform-origin: bottom ;
+    transition: transform 0.3s ease-out;
+}
+
+#anim:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom ;
+}
+#head {
+    height: 1.8cm;
+    background-color: #CFF5E7 !important;
+}
+body {
+    background-color:#CBEDD5 !important ;
 }
