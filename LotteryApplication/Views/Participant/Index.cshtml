@@ -1,0 +1,52 @@
+﻿@model IEnumerable<LotteryApplication.Models.Participation>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+        <p>
+
+    <a class="btn btn-primary"  asp-action="Create" id="cr" type="submit" > + Create New Participation </a>
+    </p>
+
+    
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Participation Id
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfParticipation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfParticipation)
+            </td>
+            <td>
+               
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@foreach(var item in Model){
+    @if(item.HaveWon==true){
+        <h3 class="a 1">Congrats you have won the lottery ! </h3>
+    }
+    
+}
+
+
