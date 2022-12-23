@@ -10,24 +10,35 @@ using LotteryApplication.Models;
 using MessagePack.Formatters;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Controller;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace LotteryApplication.Controllers
 {
     public class ParticipantController : Controller
     {
         private readonly ApplicationDbContext _context;
-        
+        private readonly UserManager<ApplicationUser> _userManager;
+        private ApplicationUser? _applicationUser;
 
 
         public ParticipantController(ApplicationDbContext context)
         {
             _context = context;
+            _userManager = context.GetService<UserManager<ApplicationUser>>();
         }
-
-        // GET: Participant
-        public async Task<IActionResult> Index()
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-              return View(await _context.participations.ToListAsync());
+            if(User.Identity!=null)
+            _applicationUser = _userManager.FindByNameAsync(User.Identity.Name).Result;
+        }
+        // GET: Participant
+        public IActionResult Index()
+        {
+            Participation? participation = null;
+            if (_applicationUser != null)
+                participation = _applicationUser.Participation;
+              return View(participation);
         }
 
         // GET: Participant/Details/5
@@ -48,24 +59,23 @@ namespace LotteryApplication.Controllers
             return View();
         }
 
-        // GET: Participant/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Create([Bind("Id,HaveWon,DateOfParticipation")] Participation participation)
+        public async Task<IActionResult> Create()
         {
             
 
-            if (ModelState.IsValid)
+            if (_applicationUser!=null && _applicationUser.Participation==null)
             {
+                Participation participation = new Participation();
                 participation.Id = Guid.NewGuid();
                 participation.DateOfParticipation = DateTime.Now;
                 participation.HaveWon = false;
-
+                participation.Participant = _applicationUser;
+                _applicationUser.Participation = participation;
+                await _userManager.UpdateAsync(_applicationUser);
                 _context.Add(participation);
                 await _context.SaveChangesAsync();
                 
@@ -76,20 +86,6 @@ namespace LotteryApplication.Controllers
 
 
 
-        }
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null || _context.participations == null)
-            {
-                return NotFound();
-            }
-
-            var participation = await _context.participations.FindAsync(id);
-            if (participation == null)
-            {
-                return NotFound();
-            }
-            return View(participation);
         }
 
         // GET: Participant/Edit/5

@@ -1,17 +1,19 @@
-﻿@model IEnumerable<LotteryApplication.Models.Participation>
+﻿@model LotteryApplication.Models.Participation
 
 
 @{
     ViewData["Title"] = "Index";
 }
 
-        <p>
+@if(Model==null){
+    <form asp-action="Create">
+        <div class="form-group">
+            <input type="submit" value="Create participation" class="btn btn-primary" />
+        </div>
+    </form>
+}
 
-    <a class="btn btn-primary"  asp-action="Create" id="cr" type="submit" > + Create New Participation </a>
-    </p>
-
-    
-
+else{
 
 <table class="table">
     <thead>
@@ -26,27 +28,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                    @Html.DisplayFor(modelItem => Model.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateOfParticipation)
+                    @Html.DisplayFor(modelItem => Model.DateOfParticipation)
             </td>
             <td>
                
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
             </td>
         </tr>
-}
     </tbody>
 </table>
-@foreach(var item in Model){
-    @if(item.HaveWon==true){
+
+    @if(Model.HaveWon==true){
         <h3 class="a 1">Congrats you have won the lottery ! </h3>
     }
     
+
 }
 
 
