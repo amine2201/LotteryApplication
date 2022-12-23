@@ -12,7 +12,10 @@ namespace LotteryApplication.Controllers
         {
             _logger = logger;
         }
-
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
             return View();
