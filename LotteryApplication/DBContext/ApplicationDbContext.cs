@@ -18,6 +18,7 @@ namespace LotteryApplication.DBContext
                 .HasOne(p => p.Participant)
                 .WithOne(a => a.Participation)
                 .HasForeignKey<Participation>(p => p.ParticipantId);
+            base.OnModelCreating(modelBuilder);
         }
         public DbSet<ApplicationUser> applicationUsers { get; set; }
         public DbSet<IdentityRole> roleUsers { get; set; }
