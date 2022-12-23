@@ -69,11 +69,13 @@ namespace LotteryApplication.Controllers
 
             if (_applicationUser!=null && _applicationUser.Participation==null)
             {
-                Participation participation = new Participation();
-                participation.Id = Guid.NewGuid();
-                participation.DateOfParticipation = DateTime.Now;
-                participation.HaveWon = false;
-                participation.Participant = _applicationUser;
+                Participation participation = new()
+                {
+                    Id = Guid.NewGuid(),
+                    DateOfParticipation = DateTime.Now,
+                    HaveWon = false,
+                    Participant = _applicationUser
+                };
                 _applicationUser.Participation = participation;
                 await _userManager.UpdateAsync(_applicationUser);
                 _context.Add(participation);
