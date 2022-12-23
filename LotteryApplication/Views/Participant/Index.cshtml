@@ -4,12 +4,17 @@
 @{
     ViewData["Title"] = "Index";
 }
-<center>
-    <a class="btn btn-primary"  asp-action="Create" id="cr" type="submit" > + Create New Participation </a>
-    
+@if (Model == null)
+{
+    <center>
+        <form asp-action="Create">
+            <div class="form-group">
+                <input type="submit" id="cr" value="Participate" class="btn btn-primary" />
+            </div>
+        </form>
 </center>
-<br />
-    
+<br />}
+else{
 
 <table class="table">
     <thead>
@@ -18,7 +23,7 @@
                 Participation Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateOfParticipation)
+                @Html.DisplayNameFor(Model => Model.DateOfParticipation)
             </th>
             <th></th>
         </tr>
@@ -26,14 +31,14 @@
     <tbody>
         <tr>
             <td>
-                    @Html.DisplayFor(modelItem => Model.Id)
+                    @Html.DisplayFor(Model => Model.Id)
             </td>
             <td>
-                    @Html.DisplayFor(modelItem => Model.DateOfParticipation)
+                    @Html.DisplayFor(Model => Model.DateOfParticipation)
             </td>
             <td>
 
-                    <a asp-action="Delete" asp-route-id="@item.Id"><i class="gg-trash-empty"></i></a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id"><i class="gg-trash-empty"></i></a>
             </td>
         </tr>
     </tbody>
@@ -45,5 +50,6 @@
     
 
 }
+
 
 
