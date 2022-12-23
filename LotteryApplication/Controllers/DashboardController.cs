@@ -325,12 +325,12 @@ namespace LotteryApplication.Controllers
                                       select user).ToListAsync();
 
             var winners = participants.Take(3).ToList();
-            foreach(var winner in winners)
+            var participations = _context.participations.ToList();
+            foreach ( var participation in participations )
             {
-                if (winner.Participation != null)
-                    winner.Participation.HaveWon = true;
+                if(participation.Participant!=null && winners.Contains(participation.Participant)  )
+                    participation.HaveWon=true;
             }
-                
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
