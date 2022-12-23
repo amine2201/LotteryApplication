@@ -11,6 +11,14 @@ namespace LotteryApplication.DBContext
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Participation>()
+                .HasOne(p => p.Participant)
+                .WithOne(a => a.Participation)
+                .HasForeignKey<Participation>(p => p.ParticipantId);
+        }
         public DbSet<ApplicationUser> applicationUsers { get; set; }
         public DbSet<IdentityRole> roleUsers { get; set; }
         public DbSet<Participation> participations { get; set; }

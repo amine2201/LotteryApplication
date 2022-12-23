@@ -9,6 +9,7 @@ namespace LotteryApplication.Models
         public string? LastName { get; set; }
         [Required]
         public bool IsAdmin { get; set; }
+        public Participation? Participation { get; set; }
     }
     
 }
