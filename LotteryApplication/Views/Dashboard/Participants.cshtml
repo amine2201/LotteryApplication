@@ -4,12 +4,16 @@
     ViewData["Title"] = "Participants";
 }
 
-<h1>Participants</h1>
+<center>
+<h1 style="font-weight:700">Participants</h1>
+<br />
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary"> + Create New participant</a>
 </p>
-<table class="table">
+</center>
+<br />
+<table class="table table-dark">
     <thead>
         <tr>
             <th>
@@ -43,9 +47,9 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                <a asp-action="EditParticipant" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="DetailsParticipant" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="DeleteParticipant" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="EditParticipant" asp-route-id="@item.Id"><i id="iconedit" class="gg-pen"></i></a>
+
+                    <a asp-action="DeleteParticipant" asp-route-id="@item.Id"><i class="gg-trash-empty"></i></a>
             </td>
         </tr>
 }

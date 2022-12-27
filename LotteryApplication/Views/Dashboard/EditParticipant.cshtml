@@ -4,9 +4,7 @@
     ViewData["Title"] = "Edit Participant";
 }
 
-<h1>CreateParticipant</h1>
-
-<h4>Participation</h4>
+<h1 style="font-weight:700">Edit Participant</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -27,20 +25,16 @@
                 <input asp-for="Email" class="form-control" value=@Model.Email />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsAdmin" /> @Html.DisplayNameFor(model => model.IsAdmin)
-                </label>
-            </div>
+           <br />
             <div class="form-group">
                 <input type="submit" value="Edit" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
+<br />
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
 
 @section Scripts {

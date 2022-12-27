@@ -4,12 +4,17 @@
     ViewData["Title"] = "Index Participation";
 }
 
-<h1>Index</h1>
+<center>
+
+<h1 style="font-weight:700">Participations</h1>
+<br />
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">+ Create New participation</a>
 </p>
-<table class="table">
+</center>
+<br />
+<table class="table table-dark">
     <thead>
         <tr>
             <th>
@@ -31,10 +36,10 @@
                 @Html.DisplayFor(modelItem => item.DateOfParticipation)
             </td>
             <td>
-                <a asp-action="EditParticipation" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="DetailsParticipation" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="DeleteParticipation" asp-route-id="@item.Id">Delete</a>
-            </td>
+                    <a asp-action="EditParticipation" asp-route-id="@item.Id"><i id="iconedit" class="gg-pen"></i></a>
+                    <a asp-action="DeleteParticipation" asp-route-id="@item.Id"> <i class="gg-trash-empty"></i> </a>
+                </td>
+           
         </tr>
 }
     </tbody>

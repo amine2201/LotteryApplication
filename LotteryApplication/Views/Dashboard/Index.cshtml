@@ -2,21 +2,42 @@
 @{
     ViewData["Title"] = "Index";
 }
-<h1>Number of participants : @ViewData["NumberOfParticipants"]</h1>
-<h1>Number of participations : @ViewData["NumberOfParticipations"]</h1>
-<h1>Index</h1>
+<h1 style="font-weight:700">Details : </h1>
+<br />
+<table class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">Number of participants </th>
+            <th scope="col">Number of participations</th>
+         
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>@ViewData["NumberOfParticipants"]</th>
+            <td>@ViewData["NumberOfParticipations"]</td>
+            </tbody>
+            </table>
+<br />
+
+<h1 style="font-weight:700">Options : </h1>
+<br />
+<div class="ctn">
 <form asp-action="LotteryResult">
     <div class="form-group">
         <input type="submit" value="Choose the winners" class="btn btn-primary" />
     </div>
 </form>
+<br />
 <form asp-action="Participants">
     <div class="form-group">
         <input type="submit" value="Manage Participants" class="btn btn-primary" />
     </div>
 </form>
+<br />
 <form asp-action="Participations">
     <div class="form-group">
         <input type="submit" value="Manage Participations" class="btn btn-primary" />
     </div>
 </form>
+</div>
