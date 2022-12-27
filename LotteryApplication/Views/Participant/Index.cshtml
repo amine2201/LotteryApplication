@@ -15,7 +15,7 @@
 </center>
 <br />}
 else{
-
+    
 <table class="table">
     <thead>
         <tr>
@@ -38,17 +38,21 @@ else{
             </td>
             <td>
 
-                    <a asp-action="Delete" asp-route-id="@Model.Id"><i class="gg-trash-empty"></i></a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" ><i class="gg-trash-empty"></i></a>
             </td>
         </tr>
     </tbody>
 </table>
+   
 
+
+    ;
     @if(Model.HaveWon==true){
         <h3 class="a 1">Congrats you have won the lottery ! </h3>
     }
     
-
+ 
+    
 }
 
 
