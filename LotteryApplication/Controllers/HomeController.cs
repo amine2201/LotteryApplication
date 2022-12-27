@@ -1,5 +1,7 @@
 ﻿using LotteryApplication.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Diagnostics;
 
 namespace LotteryApplication.Controllers

@@ -12,9 +12,12 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Controller;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace LotteryApplication.Controllers
 {
+    [Authorize(Roles = "Participant")]
     public class ParticipantController : Controller
     {
         private readonly ApplicationDbContext _context;
