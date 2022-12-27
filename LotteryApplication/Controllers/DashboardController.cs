@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Data;
 
 namespace LotteryApplication.Controllers
@@ -26,6 +27,12 @@ namespace LotteryApplication.Controllers
         // GET: Dashboard
         public IActionResult Index()
         {
+            ViewData["NumberOfParticipants"] =  (from user in _context.applicationUsers
+                                                         join ur in _context.UserRoles on user.Id equals ur.UserId
+                                                         join role in _context.Roles on ur.RoleId equals role.Id
+                                                         where role.Name == "Participant"
+                                                         select user).ToListAsync().Result.Count();
+            ViewData["NumberOfParticipations"] = _context.participations.Count();
             return View();
         }
 
@@ -363,7 +370,7 @@ namespace LotteryApplication.Controllers
                         participation.HaveWon = true;
                 }
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(LotteryResult));
             }
             else return Problem("You cannot set a negative number");
         }
