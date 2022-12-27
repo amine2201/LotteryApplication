@@ -70,12 +70,12 @@ body {
     font-weight: 600;
     font-family: Georgia, 'Times New Roman', Times, sans-serif;
 }
-.a.1 {
+ .a {
+     padding-top:2.5cm;
     color:green;
+    font-weight:800;
 }
-.a.2 {
-    color:red;
-}
+
 a {
     text-decoration: none;
 }
@@ -126,4 +126,16 @@ a {
 }
 body {
     background-color:#CBEDD5 !important ;
+}
+#abt{
+    padding-top:2cm;
+    font-weight:800;
+    font-size:40px;
+}
+#parag{
+    font-weight:bold;
+    margin-top:0.5cm;
+}
+#cont {
+    border : 4px solid black;
 }
