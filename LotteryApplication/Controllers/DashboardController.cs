@@ -316,27 +316,57 @@ namespace LotteryApplication.Controllers
         {
             return _context.participations.Any(e => e.Id == id);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> LotteryResult()
         {
-            var participants = await (from user in _context.applicationUsers
-                                      join ur in _context.UserRoles on user.Id equals ur.UserId
-                                      join role in _context.Roles on ur.RoleId equals role.Id
-                                      join participation in _context.participations on user equals participation.Participant 
-                                      where role.Name == "Participant"
-                                      select user).ToListAsync();
-
-            var winners = participants.Take(3).ToList();
-            var participations = _context.participations.ToList();
-            foreach ( var participation in participations )
+            var participations = await _context.participations.ToListAsync();
+            List<ApplicationUser>? participants = null;
+            if (participations.Any())
             {
-                if(participation.Participant!=null && winners.Contains(participation.Participant)  )
-                    participation.HaveWon=true;
+                var participationsWon = participations.Where(p => p.HaveWon == true).ToList();
+                if (participationsWon.Any())
+                {
+                    ViewData["haveChosen"] = true;
+                    participants = participationsWon.Select(p => p.Participant).ToList();
+                }
+                else
+                {
+                    ViewData["haveChosen"] = false;
+                    participants = participations.Select(p => p.Participant).ToList();
+                }
             }
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            else
+            {
+                ViewData["haveChosen"] = false;
+            }
+            
+            return View(participants);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LotteryResult(int sizeWinners=3)
+        {
+            if (sizeWinners > 0)
+            {
+                var participants = await (from user in _context.applicationUsers
+                                          join ur in _context.UserRoles on user.Id equals ur.UserId
+                                          join role in _context.Roles on ur.RoleId equals role.Id
+                                          join participation in _context.participations on user equals participation.Participant
+                                          where role.Name == "Participant"
+                                          select user).ToListAsync();
+
+                var winners = participants.Take(sizeWinners).ToList();
+                var participations = _context.participations.ToList();
+                foreach (var participation in participations)
+                {
+                    if (participation.Participant != null && winners.Contains(participation.Participant))
+                        participation.HaveWon = true;
+                }
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            else return Problem("You cannot set a negative number");
+        }
     }
+
 }
