@@ -10,12 +10,14 @@
     <h1>Winners of the lottery</h1>
 }
 else if(Model !=null){
+    <br />
     <h1>Choose winners</h1>
+    <br />
     <form asp-action="LotteryResult">
         <label >Number of winners:</label>
         <input type="number" name="numberOfWinners" />
         <div class="form-group">
-            <input type="submit" value="Choose the winners" class="btn btn-primary" />
+            <input type="submit" value="Choose the winners" class="btn btn-primary" style="margin-top:0.7cm;" />
         </div>
     </form>
 }
