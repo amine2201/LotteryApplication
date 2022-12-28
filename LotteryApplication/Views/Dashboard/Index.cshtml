@@ -23,19 +23,19 @@
 <h1 style="font-weight:700">Options : </h1>
 <br />
 <div class="ctn">
-<form asp-action="LotteryResult">
+<form asp-action="LotteryResult" method="get">
     <div class="form-group">
         <input type="submit" value="Choose the winners" class="btn btn-primary" />
     </div>
 </form>
 <br />
-<form asp-action="Participants">
+    <form asp-action="Participants" method="get">
     <div class="form-group">
         <input type="submit" value="Manage Participants" class="btn btn-primary" />
     </div>
 </form>
 <br />
-<form asp-action="Participations">
+    <form asp-action="Participations" method="get">
     <div class="form-group">
         <input type="submit" value="Manage Participations" class="btn btn-primary" />
     </div>
