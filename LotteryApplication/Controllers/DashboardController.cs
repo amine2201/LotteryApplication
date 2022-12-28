@@ -351,9 +351,10 @@ namespace LotteryApplication.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LotteryResult(int sizeWinners=3)
+        public async Task<IActionResult> LotteryResult(int numberOfWinners)
         {
-            if (sizeWinners > 0)
+            
+            if (numberOfWinners > 0)
             {
                 var participants = await (from user in _context.applicationUsers
                                           join ur in _context.UserRoles on user.Id equals ur.UserId
@@ -362,7 +363,7 @@ namespace LotteryApplication.Controllers
                                           where role.Name == "Participant"
                                           select user).ToListAsync();
 
-                var winners = participants.Take(sizeWinners).ToList();
+                var winners = participants.Take(numberOfWinners).ToList();
                 var participations = _context.participations.ToList();
                 foreach (var participation in participations)
                 {
